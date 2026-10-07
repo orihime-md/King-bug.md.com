@@ -1,0 +1,332 @@
+   <!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>King Bug.md | Pair Your Device</title>  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap"
+    rel="stylesheet"
+  >  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Orbitron', sans-serif;
+      color: #0f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 0 0 5px #0f0;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid #0f0;
+      border-radius: 15px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 0.9em;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 8px;
+      outline: none;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    input::placeholder {
+      color: #0f0;
+      opacity: 0.55;
+    }
+
+    button {
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #00ff41;
+      transform: scale(1.03);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+    }
+
+    #status {
+      margin-top: 15px;
+      min-height: 20px;
+      font-size: 0.8em;
+    }
+
+    .success {
+      color: #00ff41;
+    }
+
+    .error {
+      color: #ff3333;
+      text-shadow: 0 0 5px #ff3333;
+    }
+
+    .code {
+      margin-top: 15px;
+      padding: 14px;
+      border: 1px solid #0f0;
+      border-radius: 8px;
+      background: rgba(0, 255, 0, 0.08);
+      font-size: 1.4em;
+      letter-spacing: 4px;
+      word-break: break-all;
+      display: none;
+    }
+
+    .backend {
+      margin-top: 8px;
+      color: #777;
+      font-size: 0.65em;
+      text-shadow: none;
+      word-break: break-all;
+    }
+  </style></head><body>  <div class="container"><h1>🔐 KING BUG.MD</h1>
+
+<p>
+  Enter your WhatsApp number to get pairing code.
+</p>
+
+<p>
+  <small>Owner: +2348161796121</small>
+</p>
+
+<input
+  type="text"
+  placeholder="Enter phone number e.g. 234816xxxxxx"
+  id="number"
+  inputmode="numeric"
+  autocomplete="tel"
+/>
+
+<button id="pairButton" onclick="getPairingCode()">
+  GET PAIRING CODE
+</button>
+
+<div id="status"></div>
+
+<div id="code" class="code"></div>
+
+<p style="margin-top: 15px;">
+  <small>Powered by Dark Cyber Team</small>
+</p>
+
+<div class="backend">
+  Backend:
+  <span id="backendUrl"></span>
+</div>
+
+  </div>  <script>
+
+    /*
+     * ==========================================================
+     * RENDER BACKEND
+     * ==========================================================
+     *
+     * Replace the URL below with your actual Render URL.
+     *
+     * Example:
+     *
+     * const RENDER_URL = "https://king-bug-md.onrender.com";
+     *
+     * Do NOT add a trailing slash.
+     */
+
+    const RENDER_URL =
+      "https://king-bug-back.onrender.com";
+
+
+    const numberInput = document.getElementById("number");
+    const pairButton = document.getElementById("pairButton");
+    const statusBox = document.getElementById("status");
+    const codeBox = document.getElementById("code");
+    const backendUrl = document.getElementById("backendUrl");
+
+
+    backendUrl.textContent = RENDER_URL;
+
+
+    function setStatus(message, type = "") {
+      statusBox.textContent = message;
+      statusBox.className = type;
+    }
+
+
+    function cleanNumber(number) {
+      return number.replace(/\D/g, "");
+    }
+
+
+    async function getPairingCode() {
+
+      const number = cleanNumber(numberInput.value);
+
+      codeBox.style.display = "none";
+      codeBox.textContent = "";
+
+      if (!number) {
+        setStatus(
+          "Please enter your WhatsApp number.",
+          "error"
+        );
+        return;
+      }
+
+
+      if (number.length < 10) {
+        setStatus(
+          "Please enter a valid number with country code.",
+          "error"
+        );
+        return;
+      }
+
+
+      if (RENDER_URL.includes("YOUR-RENDER-SERVICE")) {
+        setStatus(
+          "Render backend URL has not been configured yet.",
+          "error"
+        );
+        return;
+      }
+
+
+      pairButton.disabled = true;
+      pairButton.textContent = "CONNECTING...";
+
+      setStatus(
+        "Requesting pairing code...",
+        ""
+      );
+
+
+      try {
+
+        const response = await fetch(
+          `${RENDER_URL}/api/pair?number=${encodeURIComponent(number)}`,
+          {
+            method: "GET",
+            headers: {
+              "Accept": "application/json"
+            },
+            cache: "no-store"
+          }
+        );
+
+
+        let data;
+
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            data.error ||
+            `Server error (${response.status})`
+          );
+        }
+
+
+        const pairingCode =
+          data.code ||
+          data.pairingCode ||
+          data.pairing_code;
+
+
+        if (pairingCode) {
+
+          codeBox.textContent = pairingCode;
+          codeBox.style.display = "block";
+
+          setStatus(
+            "Pairing code generated successfully.",
+            "success"
+          );
+
+        } else {
+
+          setStatus(
+            data.message ||
+            "Server responded, but no pairing code was returned.",
+            "error"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error("Pairing error:", error);
+
+        setStatus(
+          error.message ||
+          "Unable to connect to the Render server.",
+          "error"
+        );
+
+      } finally {
+
+        pairButton.disabled = false;
+        pairButton.textContent = "GET PAIRING CODE";
+
+      }
+    }
+
+
+    numberInput.addEventListener("keydown", function(event) {
+
+      if (event.key === "Enter") {
+        getPairingCode();
+      }
+
+    });
+
+  </script></body>
+</html>
